@@ -1,0 +1,137 @@
+
+
+###############################################################################
+#
+# File name:    my.cnf
+# Server Role:  Master-Passive
+# Purpose:      MySQL option file
+# Date:         
+# Created By:   Hanan Cohen <Hanan.c80@gmail.com>
+#
+# Revisions:
+#
+# Help: Full description of system variables used in this configuration file
+#       can be found on MySQL website in the following url:
+#       http://dev.mysql.com/doc/refman/5.0/en/server-system-variables.html
+#
+################################################################################
+
+################################################################################
+# Server Configuration
+################################################################################
+
+[mysqld]
+port            = 3306
+datadir         = /var/lib/mysql
+socket          = /var/lib/mysql/mysql.sock
+
+# Do not use external locking (system locking)
+skip-external-locking
+
+# Disabling symbolic-links is recommended to prevent assorted security risks
+symbolic-links=0
+
+#table_cache             = 8192
+#thread_cache_size       = 100
+#thread_concurrency      = 16
+#max_connect_errors      = 500
+#open-files              = 20000
+
+#wait_timeout            = 28800
+#connect_timeout         = 60
+#interactive_timeout     = 28800
+#net_read_timeout        = 60
+
+max_connections         = 1024
+
+max_allowed_packet      = 64M
+tmp_table_size          = 64M
+max_heap_table_size     = 64M
+
+# -----------------------------------------------------------------------------
+# Query Cache configuration
+# -----------------------------------------------------------------------------
+query_cache_type        = 1     # 0=OFF, 1=ON, 2=DEMAND
+query_cache_size        = 64M
+query_cache_limit       = 16M
+
+# -----------------------------------------------------------------------------
+# Per connection settings
+# -----------------------------------------------------------------------------
+sort_buffer_size        = 1M
+read_buffer_size        = 1M
+read_rnd_buffer_size    = 16M
+join_buffer_size        = 1M
+
+# -----------------------------------------------------------------------------
+# Storage Engines settings
+# -----------------------------------------------------------------------------
+
+# MyISAM
+# -----------------------------------------------------------------------------
+#key_buffer_size = 256M
+
+# InnoDB
+# -----------------------------------------------------------------------------
+#innodb_data_home_dir            = /var/lib/mysql/
+#innodb_data_file_path           = ibdata1:100M:autoextend
+#innodb_autoextend_increment     = 8 # ibdata growth step
+#innodb_log_group_home_dir       = /var/lib/mysql/
+#innodb_log_arch_dir             = /var/lib/mysql/
+innodb_buffer_pool_size         = 12G
+innodb_additional_mem_pool_size = 20M
+innodb_log_file_size            = 64M
+innodb_log_buffer_size          = 16M
+innodb_open_files               = 2048
+innodb_flush_log_at_trx_commit  = 1#
+innodb_lock_wait_timeout        = 60
+innodb_file_per_table           = 1
+
+#InnoDB Recovery
+innodb_force_recovery=1
+
+
+# -----------------------------------------------------------------------------
+# Replication settings
+# -----------------------------------------------------------------------------
+server_id               = 
+sync_binlog             = 1
+innodb_support_xa       = 1
+bind-address=
+log-bin=mysql-bin
+# -----------------------------------------------------------------------------
+# Log configuration
+# -----------------------------------------------------------------------------
+
+# Enable binlog (Binary logging)
+expire_logs_days        = 30
+
+# Enable error log
+log-error               = /var/log/mysql/mysqld/mysql_error.log
+
+# Enable warnings on error log
+log_warnings
+
+# Enable the full query log. Every query (even ones with incorrect syntax) that
+# the server receives will be logged. This is useful for debugging, it is
+# usually disabled in production use.
+#log                    = /var/log/mysql/mysqld/mysql_query.log
+
+# Enabnle slow query log
+# Log slow queries. Slow queries are queries which take more than the amount of
+# time defined in "long_query_time" or which do not use indexes well, if
+# log_long_format is enabled.
+slow_query_log          = 1
+slow_query_log_file     = /var/log/mysql/mysqld/mysql_slowquery.log
+log-slow-slave-statements
+
+# All queries taking more than this amount of time (in seconds) will be trated
+# as slow. Do not use "1" as a value here, as this will result in even very
+# fast queries being logged from time to time (as MySQL currently measures
+# time with second accuracy only).
+long_query_time        = 5
+
+# Log more information in the slow query log. Normally it is good to have this
+# turned on. This will enable logging of queries that are not using indexes in
+# addition to long running queries.
+log_queries_not_using_indexes
