@@ -10,4 +10,4 @@
 IPADDR=`ip addr list eth0 |grep "inet "| cut -d ' ' -f6|cut -d/ -f1`
 hostname $1
 sed -i.save s/HOSTNAME=.*/HOSTNAME=$1/g /etc/sysconfig/network
-echo "$IPADDR $1" >> /etc/hosts
+echo "${IPADDR} $1" >> /etc/hosts

@@ -19,7 +19,7 @@ ret=$?
 
 #step 2 - send the csv to mail group 
 
-if [ $ret -eq 0 ]; then
+if [ ${ret} -eq 0 ]; then
 	echo "Report sent to you by WWW01 server" | mail -s "Report for ${date}" -a ${csv_file} name@domain.com 
 	if [ $? -ne 0 ]; then
 		echo "cannot send mail" >> ${log}
