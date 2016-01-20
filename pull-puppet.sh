@@ -23,7 +23,7 @@ git pull
 
 sudo rsync -va --exclude=.git --delete /home/repos/puppet/ /etc/puppet
 
-case "$env" in
+case "${env}" in
 env1
         rm -f /etc/puppet/puppet.conf
         sudo ln -s /etc/puppet/puppet-env1.conf /etc/puppet/puppet.conf

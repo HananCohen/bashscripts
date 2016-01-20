@@ -10,41 +10,41 @@
 
 #Folder as a var for where to execute the script 
 
-path=$1
+PATH=$1
 
-log=tmplog.log
+LOG=tmplog.log
 
 #Varify that the folder is exist and print ret code to log
 
-cd ${path}
+cd ${PATH}
 
 ret=$?
 if [ $ret -ne 0 ]; then
-	echo " `date` Action fail to execute" >>${log}
+	echo " `date` Action fail to execute" >>${LOG}
 	exit 1
 fi
 
 #VAR definition 
 
-ymlfile=/var/tmp/ymlfile.csv
+YML=/var/tmp/ymlfile.csv
 
 #exporting all yml file in folder to csv file
 
-ls $path*.yml > $ymlfile
+ls ${PATH}*.yml > ${YML}
 
 #Read the ymlfile and execute the docker command line by line
 
 flag=0	  
 while IFS= read -r line 
 do	
-	[ -f "$ymlfile" ] && sudo docker-compose -f $line up -d
+	[ -f "${YML}" ] && sudo docker-compose -f ${line} up -d
 	ret=$?
 	
 	if [ $ret -ne 0 ]; then
-		echo " `date` Action on $line fail to execute" >>${log}
+		echo " `date` Action on ${line} fail to execute" >>${LOG}
 		flag=1
 	fi	
-done < $ymlfile
+done < ${YML}
 
 #Send the script information to log with flags 
 	
@@ -53,6 +53,6 @@ if [ $flag -eq 0 ]; then
 	exit 0
 else
 	echo " `date` Action fail to execute"
-	echo $log
+	echo ${LOG}
 	exit 1
 fi
